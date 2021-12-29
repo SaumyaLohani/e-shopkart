@@ -1,40 +1,31 @@
 import React,{useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle} from '@fortawesome/free-solid-svg-icons';
-import {Form, Button} from 'react-bootstrap';
-import {auth} from '../firebaseConfig';
-import {signInWithEmailAndPassword} from 'firebase/auth';
+import { faUserCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
+import {faGoogle} from '@fortawesome/free-brands-svg-icons'
+import {Button, Alert} from 'react-bootstrap';
+import {supabase} from '../supabase';
 
 function LogIn(){
 
-    const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
+    const [err,setError]=useState("");
 
-    const login=()=>{
-        signInWithEmailAndPassword(auth,email, password)
-        .then((userCredential) => {
-          window.location.href="/";
-        }).catch(alert); 
+    const login= async ()=>{
+        const { user, session, error } = await supabase.auth.signIn({
+            provider: 'google',
+          });
+          if(error){
+              setError(error);
+          }
     }
 
     return(
         <div className="login">
             <FontAwesomeIcon icon={faUserCircle} size="5x" />
-            <h4>Log In</h4>
-            <Form className="form">
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control onChange={(e)=>{setEmail(e.target.value)}} type="email" placeholder="Enter email" />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control onChange={(e)=>{setPassword(e.target.value)}} type="password" placeholder="Password" />
-                </Form.Group>
-                <Button onClick={login} variant="success" className="button" >
-                    Submit
-                </Button>
-            </Form>
+            <h4>Log In</h4><br/>
+            <Alert>Complete your user profile after logging in by going to dashboard</Alert>
+            <Button variant="success" onClick={login}><FontAwesomeIcon icon={faGoogle} />   Log in with Google</Button><br /><br/>
+            <Button variant="success" href="/login/phone"><FontAwesomeIcon icon={faPhone} />   Log in using Phone</Button>
+            {err && <Alert variant="danger">{err}</Alert>} 
         </div>
     );
 }

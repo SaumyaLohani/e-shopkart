@@ -2,21 +2,14 @@ import React,{useState,useEffect} from 'react';
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {Row,Col,Button} from "react-bootstrap";
-import {auth} from '../firebaseConfig'
+import {supabase} from "../supabase";
 
 function ItemView(){
 
     const [data,setData]=useState([]);
     const [quant,setQuant]=useState(0);
     let {id} =useParams();
-    let uid;
-    auth.onAuthStateChanged( user => {
-        if (user) {
-           uid = user.uid;
-        } else {
-            console.log("error");
-        }
-      });
+    const user=supabase.auth.user();
 
     useEffect(()=> { 
         const getData= async() =>{
@@ -42,10 +35,12 @@ function ItemView(){
     }
 
     async function addItem(){
-        await axios.put("https://fakestoreapi.com/carts",{
-            userId:uid,
-            products:[{productId:id,quantity:quant}]
-        })
+        const { d, error } = await supabase
+        .from('cart')
+        .insert([
+            { user: user.id, product: data.title, quantity: quant},
+        ]);
+        alert("Item added")
     }
 
 
@@ -60,7 +55,7 @@ function ItemView(){
                     <p>{data.description}</p>
                     <p>Price: {data.price} $</p>
                     <p>Quantity: <button className="b" onClick={()=>minus()}>-</button>  {quant}  <button className="b" onClick={()=>plus()}>+</button></p>
-                    <Button variant="success" onClick={()=>addItem}>Add to Cart</Button>
+                    <Button variant="success" onClick={addItem} >Add to Cart</Button>
                 </Col>
             </Row>
         </div>

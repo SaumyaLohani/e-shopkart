@@ -1,59 +1,52 @@
-import React,{useState, useEffect} from 'react';
-import axios from "axios";
-import {auth} from '../firebaseConfig';
-import {Row,Col} from 'react-bootstrap';
+import React,{useEffect,useState} from 'react';
+import {supabase} from '../supabase';
+import {Button} from "react-bootstrap";
 
 function Cart(){
 
+    const user=supabase.auth.user();
     const [data,setData]=useState([]);
-    let products=[];
-    let uid;
-    auth.onAuthStateChanged( user => {
-        if (user) {
-           uid = user.uid;
-        } else {
-            console.log("error");
-        }
-      });
 
     useEffect(() =>{
         const getData= async() =>{
           try{
-            const res = await axios.get("https://fakestoreapi.com/carts/user/"+uid);
-            setData(res.data);
-            data.map(async(d,index)=>{
-                const resp=await axios.get("https://fakestoreapi.com/products/"+d.productId);
-                products.push([...resp.data,d.quantity]);
-                console.log(products);
-            })
+        let { data: cart, error } = await supabase
+          .from('cart')
+          .select("*").eq('user',user.id);
+          setData(cart);
         } catch(e){
             console.log(e)
         }
       }
       getData();
-      },[]);
+      },);
+
+      const order= async()=>{
+        const { d, error } = await supabase
+            .from('orders')
+            .insert([
+                { items:data, user:user.id },
+            ])
+        const { da, er } = await supabase
+            .from('cart')
+            .delete()
+            .eq('user', user.id);
+        alert("Order Placed!!");
+      }
 
     return(
-        <div>
-            <h1>Cart Itemss</h1>
+        <div className="App">
+            <h1>{user.email}'s Cart </h1>
             {
-                products.map((d,index) => {
+                data.map((d,index)=>{
                     return(
-                        <Row onClick={()=> window.location.href="/item/"+d.id} style={{ backgroundColor: 'white', padding: '10px', border: '1px solid'}}>
-                            <Col>
-                                <img src={d.image} alt="" />
-                            </Col> 
-                            <Col>
-                                <h3>{d.title}</h3>
-                                <p>
-                                Price: {d.price} $
-                                </p>
-                                <p>Quantity: {d.quantity}</p>
-                            </Col>
-                        </Row>
-                    )
+                        <div>
+                            {d.product}:{d.quantity}
+                        </div>
+                    );
                 })
             }
+            <Button onClick={order}>Place Order</Button>
         </div>
     );
 }

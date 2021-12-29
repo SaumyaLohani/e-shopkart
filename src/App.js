@@ -5,38 +5,27 @@ import {Routes,Route,Link} from 'react-router-dom';
 import Home from './components/Home.jsx';
 import ItemView from './components/ItemView.jsx';
 import Category from './components/Category.jsx';
-import SignIn from './components/SignIn.jsx';
 import LogIn from './components/LogIn.jsx';
 import Dashboard from './components/Dashboard.jsx';
+import Cart from './components/Cart.jsx';
+import Orders from './components/Orders.jsx';
+import Phone from './components/Phone.jsx';
 import { useState, useEffect } from 'react';
 import {Navbar,Nav,Container, Offcanvas, NavDropdown} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import {auth} from './firebaseConfig';
-import {signOut} from 'firebase/auth';
+import {supabase} from './supabase';
 
 function App() {
 
   const [categories,setCategories] = useState([]);
-  const user=auth.currentUser;
 
-  let uid;
-    auth.onAuthStateChanged( user => {
-        if (user) {
-           uid = user.uid;
-        } else {
-            console.log("error");
-        }
-      });
+  const user=supabase.auth.user();
 
-  const out=()=>{
-    signOut(auth).then(() => {
-      alert('Signed Out Successfully!!');
-      window.location.reload();
-    }).catch((error) => {
-      alert('Could Not be Signed out.');
-    });
+  const out=async()=>{
+    const { error } = await supabase.auth.signOut();
+    window.location.reload();
   }
   
 
@@ -45,7 +34,7 @@ function App() {
       try{
         const res= await axios.get("https://fakestoreapi.com/products/categories");
         setCategories(res.data);
-        console.log(categories);
+        console.log();
     } catch(e){
         console.log(e)
     }
@@ -85,7 +74,8 @@ function App() {
           <Nav>
                 <Nav.Link href={"/dashboard"}>Dashboard</Nav.Link>
                 <NavDropdown className="sign" title={sign} id="basic-nav-dropdown" >
-                  <NavDropdown.Item href={"/cart/"+uid}>Cart</NavDropdown.Item>
+                  <NavDropdown.Item href={"/cart/"}>Cart</NavDropdown.Item>
+                  <NavDropdown.Item href={"/orders"}>My Orders</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={out}>Sign Out</NavDropdown.Item>
                 </NavDropdown>
@@ -96,10 +86,10 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/category/:id" element={<Category />} />
           <Route path="/item/:id" element={<ItemView />} />
-          <Route exact path="/sign-in" element={<SignIn />} />
           <Route exact path="/login" element={<LogIn />} />
-          <Route path="/cart/:uid" />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route exact path="/orders" element={<Orders />} />
         </Routes>
       </div>
     );
@@ -131,8 +121,7 @@ function App() {
           </Navbar.Offcanvas>
           </Nav>
           <Nav>
-                <Nav.Link className="navtext" href="/login">Log In</Nav.Link>
-                <Nav.Link className="navtext" href="/sign-in">Sign In</Nav.Link>
+                <Nav.Link href="/login">Log In</Nav.Link>
           </Nav>
           </Container>
         </Navbar>
@@ -140,10 +129,10 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/category/:id" element={<Category />} />
           <Route path="/item/:id" element={<ItemView />} />
-          <Route exact path="/sign-in" element={<SignIn />} />
           <Route exact path="/login" element={<LogIn />} />
-          <Route path="/cart" />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route exact path="/login/phone" element={<Phone />} />
         </Routes>
       </div>
     );

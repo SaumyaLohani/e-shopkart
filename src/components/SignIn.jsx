@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle} from '@fortawesome/free-solid-svg-icons';
-import {Form, Button} from 'react-bootstrap';
-import {auth} from '../firebaseConfig';
+import {Form, Button, Alert} from 'react-bootstrap';
+import {auth} from '../supabase';
 import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth';
 
 function SignIn(){
@@ -10,21 +10,31 @@ function SignIn(){
     const [email , setEmail] = useState('');
     const [password , setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
+    const [err,setError]=useState("");
+    let format=/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
     const signup = ()=>{
-        if(password=== confirm){
-            createUserWithEmailAndPassword(auth, email , password)
-            .then((userCredential)=>{
-                sendEmailVerification(auth.currentUser).then(()=>{
-                    alert("Email Verification Sent");
-                })
-            alert("Account Created");
-            window.location.href="/";
-        })
-        .catch(alert);
+        if(format.test(password) && /\d/.test(password) && /[a-zA-Z]/g.test(password)){
+            if(password=== confirm){
+                createUserWithEmailAndPassword(auth, email , password)
+                .then((userCredential)=>{
+                    sendEmailVerification(auth.currentUser).then(()=>{
+                        setError("Email Verification Sent");
+                    })
+                setError("Account Created");
+                window.location.href="/";
+            })
+            .catch((error)=>{
+                setError(error.toString());
+            });
+            }
+            else{
+                setError("Password do not match!!!");
+            }
+        }else{
+            setError("Weak Password!!")
         }
-        else{
-            alert("Password do not match!!!");
-        }
+        
     }
 
 
@@ -32,6 +42,7 @@ function SignIn(){
         <div className="signin">
             <FontAwesomeIcon icon={faUserCircle} size="5x" />
             <h4>Sign In</h4>
+            {err && <Alert variant="danger">{err}</Alert>}
             <Form className="form">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
