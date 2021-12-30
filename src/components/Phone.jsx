@@ -1,9 +1,9 @@
 import React,{useState} from 'react';
-import {supabase} from '../supabase';
+import {supabase, auth} from '../supabase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import {Form,Button} from 'react-bootstrap';
-
+import {signInWithPhoneNumber, RecaptchaVerifier} from 'firebase/auth';
 
  
 function Phone(){
@@ -12,19 +12,21 @@ function Phone(){
     const [otp,setOtp]=useState("");
 
     const login=async()=>{
-        let { user, error } = await supabase.auth.signIn({
-            phone: p,
-          });
-        console.log(user);
-        console.log(error);
-        setState(true);
+
+        window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+            'size':'invisible'
+        }, auth);
+        signInWithPhoneNumber(auth, "+91"+p, window.recaptchaVerifier).then((confirmationResult) => {
+            window.confirmationResult = confirmationResult;
+          }).catch(alert);
+          setState(true)
     }
 
     const verify=async()=>{
-        let { session, error } = await supabase.auth.verifyOTP({
-            phone: p,
-            token: otp,
-          })
+        window.confirmationResult.confirm(otp).then((result)=>{
+            alert("User signed in");
+            window.location.href="/";
+        })
     }
 
     return(
@@ -34,6 +36,7 @@ function Phone(){
             <FontAwesomeIcon icon={faUserCircle} size="5x" />
             <h4>Log In Using Phone</h4><br/>
             <Form>
+                <div id="recaptcha-container" ></div>
                 <Form.Group className="mb-3" >
                     <Form.Label>Phone Number: </Form.Label>
                     <Form.Text >
@@ -52,6 +55,7 @@ function Phone(){
                 <FontAwesomeIcon icon={faUserCircle} size="5x" />
                 <h4>Log In Using Phone</h4><br/>
                 <Form>
+                    <div id="recaptcha-container"></div>
                     <Form.Group className="mb-3" controlId="formBasicText">
                         <Form.Label>Phone Number</Form.Label>
                         <Form.Control onChange={(e)=>{setPhone(e.target.value)}} type="text"  placeholder="Enter Phone Number" />

@@ -15,18 +15,18 @@ function Dashboard(){
 
     const change= async()=>{
         const { data, error } = await supabase
-        .from('users')
+        .from('user')
         .upsert([
-            {name: n, address: add, phone:phone, pincode:pin, email:user.email, id: user.id  },
+            {name: n, address: add, phone:phone, pincode:pin, email:user.email  },
         ]);
-        alert("User added successfully")
+        alert("User updated successfully")
     }
 
     const del=async ()=>{
         const { data, error } = await supabase
-        .from('users')
+        .from('user')
         .delete()
-        .eq('id', user.id);
+        .eq('email', user.email);
     }
 
     

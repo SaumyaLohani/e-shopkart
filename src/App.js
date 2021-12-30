@@ -15,16 +15,27 @@ import {Navbar,Nav,Container, Offcanvas, NavDropdown} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import {supabase} from './supabase';
+import {supabase,auth} from './supabase';
+import {onAuthStateChanged, signOut} from 'firebase/auth'
 
 function App() {
 
   const [categories,setCategories] = useState([]);
+  const [user,setUser]=useState();
+  const [supa,setSupa]=useState(true);
 
-  const user=supabase.auth.user();
+  console.log(user)
+
 
   const out=async()=>{
-    const { error } = await supabase.auth.signOut();
+    if(supa){
+      const { error } = await supabase.auth.signOut();
+    }else{
+      signOut(auth).then(() => {
+      }).catch((error) => {
+        alert(error)
+      });
+    }
     window.location.reload();
   }
   
@@ -34,9 +45,18 @@ function App() {
       try{
         const res= await axios.get("https://fakestoreapi.com/products/categories");
         setCategories(res.data);
-        console.log();
+        setUser(supabase.auth.user());
+
+  if(user===null|| user===undefined) {
+    onAuthStateChanged(auth, (u) => {
+      if (u) {
+         setUser(u);
+         setSupa(false);
+      } 
+    });
+  }
+        
     } catch(e){
-        console.log(e)
     }
   }
   getData();
