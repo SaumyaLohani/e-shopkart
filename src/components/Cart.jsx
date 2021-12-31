@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {supabase} from '../supabase';
 import {Button} from "react-bootstrap";
 
-function Cart(){
+function Cart(props){
 
     const user=supabase.auth.user();
     const [data,setData]=useState([]);
@@ -12,7 +12,7 @@ function Cart(){
           try{
         let { data: cart, error } = await supabase
           .from('cart')
-          .select("*").eq('user',user.id);
+          .select("*").eq('user',props.uid[0].id);
           setData(cart);
         } catch(e){
             console.log(e)
@@ -25,12 +25,12 @@ function Cart(){
         const { d, error } = await supabase
             .from('orders')
             .insert([
-                { items:data, user:user.id },
+                { items:data, user:props.uid[0].id},
             ])
         const { da, er } = await supabase
             .from('cart')
             .delete()
-            .eq('user', user.id);
+            .eq('user', props.uid[0].id);
         alert("Order Placed!!");
       }
 

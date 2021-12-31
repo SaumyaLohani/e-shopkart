@@ -1,16 +1,16 @@
 import React,{useState, useEffect} from 'react';
 import {supabase} from "../supabase"
 
-function Orders(){
+function Orders(props){
 
-    const user= supabase.auth.user();
     const [data,setData]=useState([]);
     
 
     useEffect(() =>{
         const getData= async() =>{
+        console.log(props);
         try{
-            let { data: orders, error } = await supabase.from('orders').select('*').eq('user',user.id);
+            let { data: orders, error } = await supabase.from('orders').select('items').eq('user',props.uid[0].id);
             setData(orders)
             console.log(data);
         } catch(e){
@@ -19,7 +19,7 @@ function Orders(){
     }
 
     getData();
-    },[]);
+    },[props]);
 
     return (
         <div className="App">

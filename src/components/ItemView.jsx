@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {Row,Col,Button} from "react-bootstrap";
 import {supabase} from "../supabase";
 
-function ItemView(){
+function ItemView(props){
 
     const [data,setData]=useState([]);
     const [quant,setQuant]=useState(0);
@@ -16,7 +16,6 @@ function ItemView(){
             try{
                 const res = await axios.get("https://fakestoreapi.com/products/"+id);
                 setData(res.data);
-                console.log(id);
             } catch(e){
                 console.log(e)
             }
@@ -38,8 +37,9 @@ function ItemView(){
         const { d, error } = await supabase
         .from('cart')
         .insert([
-            { user: user.id, product: data.title, quantity: quant},
+            { user: props.uid[0].id, product: data.title, quantity: quant},
         ]);
+        console.log(props.uid[0].id);
         alert("Item added")
     }
 

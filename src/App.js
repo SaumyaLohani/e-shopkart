@@ -23,8 +23,7 @@ function App() {
   const [categories,setCategories] = useState([]);
   const [user,setUser]=useState();
   const [supa,setSupa]=useState(true);
-
-  console.log(user)
+  const [id, setId]=useState("");
 
 
   const out=async()=>{
@@ -47,13 +46,27 @@ function App() {
         setCategories(res.data);
         setUser(supabase.auth.user());
 
-  if(user===null|| user===undefined) {
-    onAuthStateChanged(auth, (u) => {
-      if (u) {
-         setUser(u);
-         setSupa(false);
-      } 
-    });
+      if(user===null|| user===undefined) {
+        onAuthStateChanged(auth, (u) => {
+          if (u) {
+            setUser(u);
+            setSupa(false);
+          } 
+        });
+
+        if(supa){
+          let { data: u, error } = await supabase
+            .from('user')
+            .select('id').eq("email",supabase.auth.user().email);
+          
+          setId(u);
+        }else{
+          let { data: u, error } = await supabase
+            .from('user')
+            .select('id').eq("phone",user.phoneNumber);
+
+          setId(u);
+        }
   }
         
     } catch(e){
@@ -105,11 +118,11 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/category/:id" element={<Category />} />
-          <Route path="/item/:id" element={<ItemView />} />
+          <Route path="/item/:id" element={<ItemView uid={id} />} />
           <Route exact path="/login" element={<LogIn />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<Cart uid={id} />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route exact path="/orders" element={<Orders />} />
+          <Route path="/orders" element={<Orders uid={id} />} />
         </Routes>
       </div>
     );
@@ -153,6 +166,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route exact path="/login/phone" element={<Phone />} />
+          <Route path="/orders" element={<Orders uid={id} />} />
         </Routes>
       </div>
     );
