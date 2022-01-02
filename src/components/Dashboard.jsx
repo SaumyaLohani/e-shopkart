@@ -1,10 +1,11 @@
 import React,{useState} from 'react';
 import {Form, Button, Alert} from 'react-bootstrap';
-import {supabase} from '../supabase';
+import {supabase,auth} from '../supabase';
+import {signOut} from "firebase/auth";
 
 
 
-function Dashboard(){
+function Dashboard(props){
 
     const user= supabase.auth.user();
 
@@ -19,14 +20,25 @@ function Dashboard(){
         .upsert([
             {name: n, address: add, phone:phone, pincode:pin, email:user.email  },
         ]);
-        alert("User updated successfully")
+        alert("User updated successfully");
+        window.location.reload();
     }
 
     const del=async ()=>{
         const { data, error } = await supabase
-        .from('user')
-        .delete()
-        .eq('email', user.email);
+            .from('user')
+            .delete()
+            .eq('email', user.email);
+        alert("User Deleted Successfully");
+        if(props.supa){
+            const { error } = await supabase.auth.signOut();
+          }else{
+            signOut(auth).then(() => {
+            }).catch((error) => {
+              alert(error)
+            });
+          }
+          window.location.href="/";
     }
 
     
