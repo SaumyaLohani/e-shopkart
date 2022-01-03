@@ -121,7 +121,7 @@ function App() {
           <Route path="/item/:id" element={<ItemView uid={id} />} />
           <Route exact path="/login" element={<LogIn />} />
           <Route path="/cart" element={<Cart uid={id} />} />
-          <Route path="/dashboard" element={<Dashboard supa={supa} />} />
+          <Route path="/dashboard" element={<Dashboard supa={supa} uid={id} />} />
           <Route path="/orders" element={<Orders uid={id} />} />
         </Routes>
       </div>
