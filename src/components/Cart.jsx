@@ -4,16 +4,16 @@ import {Button} from "react-bootstrap";
 
 function Cart(props){
 
-    const user=supabase.auth.user();
     const [data,setData]=useState([]);
+    const [name, setName]= useState("");
 
     useEffect(() =>{
         const getData= async() =>{
           try{
-        let { data: cart, error } = await supabase
-          .from('cart')
-          .select("*").eq('user',props.uid[0].id);
-          setData(cart);
+            let { data: cart, error } = await supabase.from('cart').select("*").eq('user',props.uid[0].id);
+            let { data: e, err } =await supabase.from('user').select('name').eq('id',props.uid[0].id);
+            setData(cart);
+            setName(e);
         } catch(e){
             console.log(e)
         }
@@ -36,7 +36,7 @@ function Cart(props){
 
     return(
         <div className="App">
-            <h1>{user.email}'s Cart </h1>
+            <h1>{name}'s Cart </h1>
             {
                 data.map((d,index)=>{
                     return(
