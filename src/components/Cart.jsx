@@ -11,9 +11,9 @@ function Cart(props){
         const getData= async() =>{
           try{
             let { data: cart, error } = await supabase.from('cart').select("*").eq('user',props.uid[0].id);
-            let { data: e, err } =await supabase.from('user').select('name').eq('id',props.uid[0].id);
+            let {data: e, er} = await supabase.from('cart').select("*").eq('user',props.uid[0].id);
+            console.log(e);
             setData(cart);
-            setName(e);
         } catch(e){
             console.log(e)
         }
@@ -36,7 +36,7 @@ function Cart(props){
 
     return(
         <div className="App">
-            <h1>{name}'s Cart </h1>
+            <h1>Cart </h1>
             {
                 data.map((d,index)=>{
                     return(
