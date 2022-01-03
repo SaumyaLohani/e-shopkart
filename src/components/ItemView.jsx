@@ -9,7 +9,6 @@ function ItemView(props){
     const [data,setData]=useState([]);
     const [quant,setQuant]=useState(0);
     let {id} =useParams();
-    const user=supabase.auth.user();
 
     useEffect(()=> { 
         const getData= async() =>{
@@ -43,9 +42,11 @@ function ItemView(props){
         alert("Item added")
     }
 
-
+    
     return(
-        <div className="item">
+        <>
+        {props.uid[0].id && 
+            <div className="item">
             <Row>
                 <Col>
                     <img src={data.image} alt="" />
@@ -59,6 +60,9 @@ function ItemView(props){
                 </Col>
             </Row>
         </div>
+        }
+        </>
+        
     );
 }
 
