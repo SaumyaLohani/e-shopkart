@@ -19,7 +19,7 @@ function Cart(props){
         }
       }
       getData();
-      },);
+      },[props]);
 
       const order= async()=>{
         const { d, error } = await supabase
