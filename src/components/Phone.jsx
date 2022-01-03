@@ -12,21 +12,25 @@ function Phone(){
     const [otp,setOtp]=useState("");
 
     const login=async()=>{
-        let { data: user, error } = await supabase
+        if(/^\d+$/.test(p)){
+            let { data: user, error } = await supabase
             .from('user')
             .select('id').eq('phone',p)
         
-        if(user.length>0){
-            window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-                'size':'invisible'
-            }, auth);
-            signInWithPhoneNumber(auth, "+91"+p, window.recaptchaVerifier).then((confirmationResult) => {
-                window.confirmationResult = confirmationResult;
-              }).catch(alert);
-              setState(true)
-        }
-        else{
-            alert("User not found");
+            if(user.length>0){
+                window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+                    'size':'invisible'
+                }, auth);
+                signInWithPhoneNumber(auth, "+91"+p, window.recaptchaVerifier).then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                }).catch(alert);
+                setState(true)
+            }
+            else{
+                alert("User not found");
+            }
+        }else{
+            alert("Invalid Phone Number");
         }
     }
 

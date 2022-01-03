@@ -25,7 +25,7 @@ function Dashboard(props){
             window.location.href="/";
             
         }else{
-            alert("Wrong Pin or Phone");
+            alert("Invalid Pin or Phone");
         }
     }
 
