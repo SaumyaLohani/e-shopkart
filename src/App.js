@@ -35,7 +35,7 @@ function App() {
         alert(error)
       });
     }
-    window.location.reload();
+    window.location.href="/";
   }
   
 

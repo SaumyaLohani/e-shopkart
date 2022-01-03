@@ -15,13 +15,18 @@ function Dashboard(props){
     const [pin,setPin] = useState("");
 
     const change= async()=>{
-        const { data, error } = await supabase
-        .from('user')
-        .upsert([
-            {name: n, address: add, phone:phone, pincode:pin, email:user.email  },
-        ]);
-        alert("User updated successfully");
-        window.location.reload();
+        if(/^\d+$/.test(phone) && /^\d+$/.test(pin)){
+            const { data, error } = await supabase
+            .from('user')
+            .upsert([
+                {name: n, address: add, phone:phone, pincode:pin, email:user.email  },
+            ]);
+            alert("User updated successfully");
+            window.location.href="/";
+            
+        }else{
+            alert("Wrong Pin or Phone");
+        }
     }
 
     const del=async ()=>{
