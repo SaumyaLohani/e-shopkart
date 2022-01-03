@@ -44,9 +44,7 @@ function ItemView(props){
 
     
     return(
-        <>
-        {props.uid[0].id && 
-            <div className="item">
+        <div className="item">
             <Row>
                 <Col>
                     <img src={data.image} alt="" />
@@ -60,9 +58,6 @@ function ItemView(props){
                 </Col>
             </Row>
         </div>
-        }
-        </>
-        
     );
 }
 

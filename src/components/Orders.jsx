@@ -22,34 +22,29 @@ function Orders(props){
     },[props]);
 
     return (
-        <>
-        {props.uid[0].id && 
         <div className="App">
-        <h1>My Orders</h1>
-        <hr />
-        {
-            data.map((d,index)=>{
-                return(
-                <div>
-                    <h3>Order {index+1}</h3>
-                    {d.items.map((da,index)=>{
-                        console.log(da);
-                        return(
-                            <div>
-                                <p>Item no.: {index+1}</p>
-                                <p>Item name: {da.product}</p>
-                                <p>Item Quantity: {da.quantity}</p>
-                            </div>
-                        );
-                    })}
-                </div>
-                );
-            })
-        }
-    </div>
-        }
-        </>
-        
+            <h1>My Orders</h1>
+            <hr />
+            {
+                data.map((d,index)=>{
+                    return(
+                    <div>
+                        <h3>Order {index+1}</h3>
+                        {d.items.map((da,index)=>{
+                            console.log(da);
+                            return(
+                                <div>
+                                    <p>Item no.: {index+1}</p>
+                                    <p>Item name: {da.product}</p>
+                                    <p>Item Quantity: {da.quantity}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    );
+                })
+            }
+        </div>
     );
 }
 

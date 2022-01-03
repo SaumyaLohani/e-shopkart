@@ -35,24 +35,19 @@ function Cart(props){
       }
 
     return(
-        <>
-        {props.uid[0].id && 
         <div className="App">
-        <h1>{name}'s Cart </h1>
-        {
-            data.map((d,index)=>{
-                return(
-                    <div>
-                        {d.product}:{d.quantity}
-                    </div>
-                );
-            })
-        }
-        <Button onClick={order}>Place Order</Button>
-    </div>
-        }
-        </>
-        
+            <h1>{name}'s Cart </h1>
+            {
+                data.map((d,index)=>{
+                    return(
+                        <div>
+                            {d.product}:{d.quantity}
+                        </div>
+                    );
+                })
+            }
+            <Button onClick={order}>Place Order</Button>
+        </div>
     );
 }
 
