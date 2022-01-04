@@ -31,6 +31,15 @@ function Cart(props){
             .eq('user', props.uid);
         alert("Order Placed!!");
       }
+
+      const del= async(val)=>{
+        const { data, error } = await supabase
+            .from('cart')
+            .delete()
+            .eq('product', val);
+        alert("item deleted!!");
+        window.location.reload();
+      }
     if(data){
 
     return(
@@ -40,7 +49,7 @@ function Cart(props){
                 data.map((d,index)=>{
                     return(
                         <div>
-                            {d.product}:{d.quantity}
+                            {d.product}:{d.quantity} <Button onClick={()=>del(d.product)}>Delete</Button>
                         </div>
                     );
                 })
