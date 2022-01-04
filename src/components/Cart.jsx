@@ -10,9 +10,7 @@ function Cart(props){
     useEffect(() =>{
         const getData= async() =>{
           try{
-            let { data: cart, error } = await supabase.from('cart').select("*").eq('user',props.uid[0].id);
-            let {data: e, er} = await supabase.from('cart').select("*").eq('user',props.uid[0].id);
-            console.log(e);
+            let { data: cart, error } = await supabase.from('cart').select("*").eq('user',props.uid);
             setData(cart);
         } catch(e){
             console.log(e)
@@ -25,18 +23,19 @@ function Cart(props){
         const { d, error } = await supabase
             .from('orders')
             .insert([
-                { items:data, user:props.uid[0].id},
+                { items:data, user:props.uid},
             ])
         const { da, er } = await supabase
             .from('cart')
             .delete()
-            .eq('user', props.uid[0].id);
+            .eq('user', props.uid);
         alert("Order Placed!!");
       }
+    if(data){
 
     return(
         <div className="App">
-            <h1>Cart </h1>
+            <h1> Cart </h1>
             {
                 data.map((d,index)=>{
                     return(
@@ -49,6 +48,9 @@ function Cart(props){
             <Button onClick={order}>Place Order</Button>
         </div>
     );
+    }else{
+        return(<></>);
+    }
 }
 
 export default Cart;

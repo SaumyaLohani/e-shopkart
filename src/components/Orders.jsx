@@ -10,7 +10,7 @@ function Orders(props){
         const getData= async() =>{
         console.log(props);
         try{
-            let { data: orders, error } = await supabase.from('orders').select('items').eq('user',props.uid[0].id);
+            let { data: orders, error } = await supabase.from('orders').select('items').eq('user',props.uid);
             setData(orders)
             console.log(data);
         } catch(e){
@@ -21,31 +21,37 @@ function Orders(props){
     getData();
     },[props]);
 
-    return (
-        <div className="App">
-            <h1>My Orders</h1>
-            <hr />
-            {
-                data.map((d,index)=>{
-                    return(
-                    <div>
-                        <h3>Order {index+1}</h3>
-                        {d.items.map((da,index)=>{
-                            console.log(da);
-                            return(
-                                <div>
-                                    <p>Item no.: {index+1}</p>
-                                    <p>Item name: {da.product}</p>
-                                    <p>Item Quantity: {da.quantity}</p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    );
-                })
-            }
-        </div>
-    );
+    if(data){
+        return (
+            <div className="App">
+                <h1>My Orders</h1>
+                <hr />
+                {
+                    data.map((d,index)=>{
+                        return(
+                        <div>
+                            <h3>Order {index+1}</h3>
+                            {d.items.map((da,index)=>{
+                                console.log(da);
+                                return(
+                                    <div>
+                                        <p>Item no.: {index+1}</p>
+                                        <p>Item name: {da.product}</p>
+                                        <p>Item Quantity: {da.quantity}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        );
+                    })
+                }
+            </div>
+        );
+    }else{
+        return(<></>);
+    }
+
+    
 }
 
 export default Orders;

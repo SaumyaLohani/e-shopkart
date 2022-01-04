@@ -21,9 +21,9 @@ import {onAuthStateChanged, signOut} from 'firebase/auth'
 function App() {
 
   const [categories,setCategories] = useState([]);
-  const [user,setUser]=useState();
   const [supa,setSupa]=useState(true);
   const [id, setId]=useState("");
+  const [phone, setPhone]=useState("");
 
 
   const out=async()=>{
@@ -44,40 +44,36 @@ function App() {
       try{
         const res= await axios.get("https://fakestoreapi.com/products/categories");
         setCategories(res.data);
-        setUser(supabase.auth.user());
-
-      if(user===null|| user===undefined) {
-        onAuthStateChanged(auth, (u) => {
-          if (u) {
-            setUser(u);
-            setSupa(false);
-          } 
-        });
-
-        if(supa){
+        if(supabase.auth.user()){
           let { data: u, error } = await supabase
             .from('user')
             .select('id').eq("email",supabase.auth.user().email);
-          
-          setId(u);
+          setId(u[0].id);
         }else{
-          let { data: u, error } = await supabase
-            .from('user')
-            .select('id').eq("phone",user.phoneNumber);
-
-          setId(u);
+          setSupa(false);
+          onAuthStateChanged(auth, (u) => {
+            if(u){
+              setPhone(u.phoneNumber.replace("+91",""));
+            }
+          });
+            let { data: u, error } = await supabase
+              .from('user')
+              .select('id').eq("phone",phone);
+            setId(u[0].id);
+          
         }
   }
         
-    } catch(e){
+     catch(e){
     }
   }
   getData();
-  },[]);
+  },[phone]);
 
   const sign=<FontAwesomeIcon icon={faUserCircle} size="lg" />;
+  console.log(id);
 
-  if(user){
+  if(id){
     return (
       <div>
         <Navbar bg="success" variant="dark" expand={false}>

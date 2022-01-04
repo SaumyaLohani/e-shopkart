@@ -12,7 +12,6 @@ function Home() {
         try{
           const res = await axios.get("https://fakestoreapi.com/products/");
           setData(res.data);
-          console.log(data);
       } catch(e){
           console.log(e)
       }

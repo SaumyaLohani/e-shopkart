@@ -7,11 +7,12 @@ import {supabase} from "../supabase";
 function ItemView(props){
 
     const [data,setData]=useState([]);
-    const [quant,setQuant]=useState(0);
+    const [quant,setQuant]=useState(1);
     let {id} =useParams();
 
     useEffect(()=> { 
         const getData= async() =>{
+            console.log(props)
             try{
                 const res = await axios.get("https://fakestoreapi.com/products/"+id);
                 setData(res.data);
@@ -23,7 +24,7 @@ function ItemView(props){
     },[]);
 
     function minus(){
-        if(quant>0){
+        if(quant>1){
             setQuant(quant-1);
         }
     }
@@ -33,18 +34,24 @@ function ItemView(props){
     }
 
     async function addItem(){
-        const { d, error } = await supabase
-        .from('cart')
-        .insert([
-            { user: props.uid[0].id, product: data.title, quantity: quant},
-        ]);
-        console.log(props.uid[0].id);
-        alert("Item added")
+        if(props.uid===undefined){
+            alert("User not logged in!!");
+            window.location.href="/login";
+        }else{
+            const { d, error } = await supabase
+            .from('cart')
+            .insert([
+                { user: props.uid, product: data.title, quantity: quant},
+            ]);
+            console.log(props.uid);
+            alert("Item added")
+        }
     }
 
     
     return(
-        <div className="item">
+        <>
+        {props&& <div className="item">
             <Row>
                 <Col>
                     <img src={data.image} alt="" />
@@ -57,7 +64,9 @@ function ItemView(props){
                     <Button variant="success" onClick={addItem} >Add to Cart</Button>
                 </Col>
             </Row>
-        </div>
+        </div>}
+        </>
+        
     );
 }
 
