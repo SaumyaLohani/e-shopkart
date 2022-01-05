@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
-import { Row, Col, Card} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Card} from 'react-bootstrap';
+import ParticlesBg from 'particles-bg';
 
 function Home() {
 
@@ -22,30 +22,22 @@ function Home() {
   
     return (
       <div className="App">
-        
-      
         {
           data.map((d,index)=>{
             return(
-              <Row onClick={()=> window.location.href="/item/"+d.id} style={{ backgroundColor: 'white', padding: '10px', border: '1px solid'}}>
-              <Col>
-                <img src={d.image} alt="" />
-              </Col> 
-              <Col>
-                <h3>{d.title}</h3>
-                <p>
+              <Card onClick={()=> window.location.href="/item/"+d.id}  >
+                <Card.Img src={d.image} />
+                <Card.Body>
+                  <Card.Title>{d.title}</Card.Title>
+                  <Card.Text>
                   Price: {d.price} $
-                </p>
-              </Col>
-            </Row>
+                  </Card.Text>
+                </Card.Body>
+            </Card>
             )
           })
     
         }
-        
-      
-     
-      
       </div>
     );
   }

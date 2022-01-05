@@ -1,5 +1,32 @@
-body{
-  background-color: #dddddd;
+body {
+  background: linear-gradient(269deg, #b5eaea, #edf6e5, #ffbcbc, #f38ba0);
+  background-size: 800% 800%;
+
+  -webkit-animation: gradient 7s ease infinite;
+  -moz-animation: gradient 7s ease infinite;
+  animation: gradient 7s ease infinite;
+}
+
+@-webkit-keyframes gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 51%}
+  100%{background-position:0% 50%}
+}
+@-moz-keyframes gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 51%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 51%}
+  100%{background-position:0% 50%}
+}
+
+.navbar{
+  background-color: #fff !important;
+  margin-bottom:20px;
+  border-bottom: 1px solid;
 }
 
 .App {
@@ -86,4 +113,64 @@ img{
   padding: 20px;
   padding-left: 80px;
   padding-right: 80px;
+}
+
+.card-img{
+  height: 300px;
+  width: 250px;
+}
+
+.App .card{
+  width: 18rem;
+  height: 516px;
+  margin: 15px;
+  padding: 8px;
+  border: none;
+  border-radius: 15px;
+  display:inline-grid;
+  border: 1px solid rgba(143, 142, 142, 0.788);
+  border-radius: 15px;
+  box-shadow: 0px 0px 13px 4px #797676;
+}
+
+.item img{
+  border: 1px solid rgba(143, 142, 142, 0.788);
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px 5px #797676;
+}
+
+.cart{
+  text-align: center;
+}
+
+.cart .card{
+  text-align: left;
+  width: 80%;
+  height: 100px;
+}
+
+.cart .card .a{
+  padding: 10px;
+}
+
+.cart .card .c{
+  text-align: right;
+  padding: 15px;
+}
+
+.order{
+  text-align: center;
+}
+
+.order .card{
+  width: 80%;
+  margin: 20px;
+  margin-left: 10%;
+  padding: 8px;
+  border: none;
+  border-radius: 15px;
+  display:flex;
+  border: 1px solid rgba(143, 142, 142, 0.788);
+  border-radius: 15px;
+  box-shadow: 0px 0px 13px 4px #797676;
 }

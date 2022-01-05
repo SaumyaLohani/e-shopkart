@@ -23,29 +23,23 @@ function Category(){
 
 
     return(
-        <div className="App">
-      
+      <div className="App">
         {
           data.map((d,index)=>{
             return(
-              <Card style={{ width: '18rem' }}>
-              <Card.Img variant="top" src={d.image} />
-              <Card.Body>
-                <Card.Title>{d.title}</Card.Title>
-                <Card.Text>
-                  Price: {d.price}
-                </Card.Text>
-                <Button variant="success">View Item</Button>
-              </Card.Body>
+              <Card onClick={()=> window.location.href="/item/"+d.id}  >
+                <Card.Img src={d.image} />
+                <Card.Body>
+                  <Card.Title>{d.title}</Card.Title>
+                  <Card.Text>
+                  Price: {d.price} $
+                  </Card.Text>
+                </Card.Body>
             </Card>
             )
           })
     
         }
-        
-      
-     
-      
       </div>
     );
 }

@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react';
-import {supabase} from "../supabase"
+import {supabase} from "../supabase";
+import {Card, ListGroup, Modal} from "react-bootstrap";
 
 function Orders(props){
 
@@ -23,25 +24,23 @@ function Orders(props){
 
     if(data){
         return (
-            <div className="App">
+            <div className="order">
                 <h1>My Orders</h1>
                 <hr />
                 {
                     data.map((d,index)=>{
                         return(
-                        <div>
-                            <h3>Order {index+1}</h3>
+                        <Card>
+                            <Card.Title style={{fontSize:'25px'}}>Order {index+1}</Card.Title>
+                            <ListGroup>
                             {d.items.map((da,index)=>{
                                 console.log(da);
                                 return(
-                                    <div>
-                                        <p>Item no.: {index+1}</p>
-                                        <p>Item name: {da.product}</p>
-                                        <p>Item Quantity: {da.quantity}</p>
-                                    </div>
+                                        <ListGroup.Item>{da.product}:<b>{da.quantity}</b></ListGroup.Item>
                                 );
                             })}
-                        </div>
+                            </ListGroup>
+                        </Card>
                         );
                     })
                 }

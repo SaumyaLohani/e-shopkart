@@ -1,11 +1,21 @@
 import React,{useEffect,useState} from 'react';
 import {supabase} from '../supabase';
-import {Button} from "react-bootstrap";
+import {Button, Card, Modal,Col,Row, Alert} from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 
 function Cart(props){
 
     const [data,setData]=useState([]);
-    const [name, setName]= useState("");
+    const [name, setName]= useState("");const [message,setMessage] = useState("");
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false);
+        if(message==="Order item deleted"){
+            window.location.reload();
+        }
+    }
+    const handleShow = () => setShow(true);
 
     useEffect(() =>{
         const getData= async() =>{
@@ -29,7 +39,8 @@ function Cart(props){
             .from('cart')
             .delete()
             .eq('user', props.uid);
-        alert("Order Placed!!");
+        setMessage("Order Placed");
+        handleShow();
       }
 
       const del= async(val)=>{
@@ -37,26 +48,54 @@ function Cart(props){
             .from('cart')
             .delete()
             .eq('product', val);
-        alert("item deleted!!");
-        window.location.reload();
+        setMessage("Order item deleted");
+        handleShow();
       }
     if(data){
+        if(data.length>0){
+            return(
+                <div className="cart">
+                    <h1> Cart </h1>
+                    {
+                        data.map((d,index)=>{
+                            return(
+                                <div>
+                                    <Card>
+                                        <Row>
+                                            <Col className="a">
+                                                <Card.Title>{index+1}. &ensp;{d.product}</Card.Title>
+                                                <Card.Text>&ensp; &ensp; &ensp;Quantity:{d.quantity}&emsp;</Card.Text>
+                                            </Col>
+                                            <Col className="c">
+                                                <Button variant="outline-danger"  onClick={()=>del(d.product)}><FontAwesomeIcon icon={faTrash} /></Button>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </div>
+                            );
+                        })
+                    }
+                    <Button variant="outline-primary" onClick={order}><FontAwesomeIcon icon={faCheckCircle}  />&ensp;Place Order</Button>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Body>{message}</Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="outline-secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
+            );
+        }else{
+            return(
+                <div className="cart">
+                    <h1>Cart</h1><br/> <br/>
+                    <Alert variant="warning">!!! CART IS EMPTY!!!</Alert>
+                </div>
+            );
+        }
 
-    return(
-        <div className="App">
-            <h1> Cart </h1>
-            {
-                data.map((d,index)=>{
-                    return(
-                        <div>
-                            {d.product}:{d.quantity} <Button onClick={()=>del(d.product)}>Delete</Button>
-                        </div>
-                    );
-                })
-            }
-            <Button onClick={order}>Place Order</Button>
-        </div>
-    );
+    
     }else{
         return(<></>);
     }

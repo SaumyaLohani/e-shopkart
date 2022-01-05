@@ -23,8 +23,8 @@ function LogIn(){
             <FontAwesomeIcon icon={faUserCircle} size="5x" />
             <h4>Log In</h4><br/>
             <Alert>Complete your user profile after logging in by going to dashboard</Alert>
-            <Button variant="success" onClick={login}><FontAwesomeIcon icon={faGoogle} />   Log in with Google</Button><br /><br/>
-            <Button variant="success" href="/login/phone"><FontAwesomeIcon icon={faPhone} />   Log in using Phone</Button>
+            <Button variant="primary" onClick={login}><FontAwesomeIcon icon={faGoogle} />   Log in with Google</Button><br /><br/>
+            <Button variant="outline-secondary" href="/login/phone"><FontAwesomeIcon icon={faPhone} />   Log in using Phone</Button>
             {err && <Alert variant="danger">{err}</Alert>} 
         </div>
     );

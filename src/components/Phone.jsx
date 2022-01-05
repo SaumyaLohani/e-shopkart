@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {supabase, auth} from '../supabase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import {Form,Button} from 'react-bootstrap';
+import {Form,Button,Modal} from 'react-bootstrap';
 import {signInWithPhoneNumber, RecaptchaVerifier} from 'firebase/auth';
 
  
@@ -10,6 +10,15 @@ function Phone(){
     const [p,setPhone]=useState("");
     const [s,setState]= useState(false);
     const [otp,setOtp]=useState("");
+    const [message,setMessage] = useState("");
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false);
+        window.confirmationResult.confirm(otp).then((result)=>{
+            window.location.href="/";
+        })
+    }
+    const handleShow = () => setShow(true);
 
     const login=async()=>{
         if(/^\d+$/.test(p)){
@@ -27,16 +36,19 @@ function Phone(){
                 setState(true)
             }
             else{
-                alert("User not found");
+                setMessage("User not found");
+                handleShow();
             }
         }else{
-            alert("Invalid Phone Number");
+            setMessage("Invalid Phone Number");
+            handleShow();
         }
     }
 
     const verify=async()=>{
         window.confirmationResult.confirm(otp).then((result)=>{
-            alert("User signed in");
+            setMessage("User signed in");
+            handleShow();
             window.location.href="/";
         })
     }
@@ -59,7 +71,7 @@ function Phone(){
                     <Form.Label>OTP</Form.Label>
                     <Form.Control type="text" onChange={(e)=>setOtp(e.target.value)} placeholder="Enter OTP" />
                 </Form.Group>
-                <Button variant="success" onClick={verify}>Submit </Button>
+                <Button variant="outline-primary" onClick={verify}>Submit </Button>
             </Form>
         </div>
             :
@@ -72,9 +84,18 @@ function Phone(){
                         <Form.Label>Phone Number</Form.Label>
                         <Form.Control onChange={(e)=>{setPhone(e.target.value)}} type="text"  placeholder="Enter Phone Number" />
                     </Form.Group>
-                    <Button variant="success" onClick={login}>Submit </Button>
+                    <Button variant="outline-primary" onClick={login}>Submit </Button>
                 </Form>
             </div>}
+
+        <Modal show={show} onHide={handleClose}>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </div>
     );
 }

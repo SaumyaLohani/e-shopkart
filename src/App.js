@@ -76,7 +76,7 @@ function App() {
   if(id){
     return (
       <div>
-        <Navbar bg="success" variant="dark" expand={false}>
+        <Navbar bg="light" expand={false}>
           <Container fluid>
           <Nav>
           <Navbar.Brand href="/"><FontAwesomeIcon icon={faShoppingCart} />    E-ShopKart    </Navbar.Brand>
@@ -125,7 +125,7 @@ function App() {
   } else{
     return (
       <div>
-        <Navbar bg="success" variant="dark" expand={false}>
+        <Navbar bg="light" expand={false}>
           <Container fluid>
           <Nav>
           <Navbar.Brand href="/"><FontAwesomeIcon icon={faShoppingCart} />    E-ShopKart    </Navbar.Brand>
