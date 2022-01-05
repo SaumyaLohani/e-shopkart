@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import {supabase} from "../supabase";
 import {Card, ListGroup, Modal} from "react-bootstrap";
+import Loader from "react-loader-spinner";
 
 function Orders(props){
 
@@ -47,7 +48,14 @@ function Orders(props){
             </div>
         );
     }else{
-        return(<></>);
+        return(<div className="order">
+            <Loader
+        type="Bars"
+        color="#35589A"
+        height={100}
+        width={100}
+      />
+        </div>);
     }
 
     

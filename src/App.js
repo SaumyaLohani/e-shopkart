@@ -1,3 +1,4 @@
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 import './App.css';
@@ -73,36 +74,17 @@ function App() {
   const sign=<FontAwesomeIcon icon={faUserCircle} size="lg" />;
   console.log(id);
 
-  if(id){
+  if(id || supabase.auth.user()){
     return (
       <div>
-        <Navbar bg="light" expand={false}>
+        <Navbar sticky="top" bg="light" >
           <Container fluid>
           <Nav>
           <Navbar.Brand href="/"><FontAwesomeIcon icon={faShoppingCart} />    E-ShopKart    </Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar" />
-            <Navbar.Offcanvas 
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            placement="end">
-            <Offcanvas.Header closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">E-ShopKart</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3 offc">
-                <Link to="/">All</Link>
-                {
-                  categories.map((c,index)=> 
-                  <Link to={"/category/"+c}>{c.charAt(0).toUpperCase() + c.slice(1)}</Link>
-                  )
-                }
-            </Nav>
-          </Offcanvas.Body>
-          </Navbar.Offcanvas>
           </Nav>
           <Nav>
                 <Nav.Link href={"/dashboard"}>Dashboard</Nav.Link>
-                <NavDropdown className="sign" title={sign} id="basic-nav-dropdown" >
+                <NavDropdown className="sign" title={sign} id="basic-nav-dropdown" drop="start" >
                   <NavDropdown.Item href={"/cart/"}>Cart</NavDropdown.Item>
                   <NavDropdown.Item href={"/orders"}>My Orders</NavDropdown.Item>
                   <NavDropdown.Divider />
@@ -125,29 +107,10 @@ function App() {
   } else{
     return (
       <div>
-        <Navbar bg="light" expand={false}>
+        <Navbar fixed="top" bg="light">
           <Container fluid>
           <Nav>
           <Navbar.Brand href="/"><FontAwesomeIcon icon={faShoppingCart} />    E-ShopKart    </Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar" />
-            <Navbar.Offcanvas 
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            placement="end">
-            <Offcanvas.Header closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">E-ShopKart</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3 offc">
-                <Link to="/">All</Link>
-                {
-                  categories.map((c,index)=> 
-                  <Link to={"/category/"+c}>{c.charAt(0).toUpperCase() + c.slice(1)}</Link>
-                  )
-                }
-            </Nav>
-          </Offcanvas.Body>
-          </Navbar.Offcanvas>
           </Nav>
           <Nav>
                 <Nav.Link href="/login">Log In</Nav.Link>

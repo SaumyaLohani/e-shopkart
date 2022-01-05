@@ -60,9 +60,6 @@ function ItemView(props){
             handleShow();
         }
     }
-
-    function Mod(){
-    }
     
     return(
         <>

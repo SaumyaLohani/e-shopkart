@@ -3,6 +3,7 @@ import {supabase} from '../supabase';
 import {Button, Card, Modal,Col,Row, Alert} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheckCircle} from '@fortawesome/free-solid-svg-icons';
+import Loader from "react-loader-spinner";
 
 function Cart(props){
 
@@ -97,7 +98,16 @@ function Cart(props){
 
     
     }else{
-        return(<></>);
+        return(
+        <div className="cart">
+        <Loader
+        type="Bars"
+        color="#35589A"
+        height={100}
+        width={100}
+      />
+        
+        </div>);
     }
 }
 
