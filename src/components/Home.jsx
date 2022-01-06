@@ -7,6 +7,7 @@ function Home() {
 
     const [data,setData] = useState([]);
     const [radio,setRadio]= useState("all");
+    const [load,setLoad]=useState(true);
     const [matches, setMatches] = useState(
       window.matchMedia("(max-width: 600px)").matches
     )
@@ -14,6 +15,7 @@ function Home() {
     useEffect(() =>{
       window.matchMedia("(max-width: 600px)").addEventListener('change', e => setMatches( e.matches ));
       const getData= async() =>{
+        setLoad(true);
         if(radio==="all"){
           const res = await axios.get("https://fakestoreapi.com/products/");
           setData(res.data);
@@ -30,6 +32,7 @@ function Home() {
           const res = await axios.get("https://fakestoreapi.com/products/category/women's clothing");
           setData(res.data);
         }
+        setLoad(false);
     }
     getData();
     },[radio,matches]);
@@ -48,8 +51,15 @@ function Home() {
                   <Form.Check type="radio" label="Women's Clothing" name="group" onChange={()=>setRadio("women")}/>
                 </Form>
                 </Row>
+                
               <Col className="">
               {
+                load?<Loader
+                type="Bars"
+                color="#35589A"
+                height={100}
+                width={100}
+              />:
               data.map((d,index)=>{
                 return(
                   <Card onClick={()=> window.location.href="/item/"+d.id}  >
@@ -93,7 +103,12 @@ function Home() {
                 </Form>
               </Col>
               <Col className="dat">
-              {
+              {load?<Loader
+                type="Bars"
+                color="#35589A"
+                height={100}
+                width={100}
+              />:
               data.map((d,index)=>{
                 return(
                   <Card onClick={()=> window.location.href="/item/"+d.id}  >
