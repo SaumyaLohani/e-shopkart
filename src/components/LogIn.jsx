@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
 import {faGoogle} from '@fortawesome/free-brands-svg-icons'
-import {Button, Alert} from 'react-bootstrap';
+import {Button, Alert, Container, Row, Col} from 'react-bootstrap';
 import {supabase} from '../supabase';
 
 function LogIn(){
@@ -19,14 +19,29 @@ function LogIn(){
     }
 
     return(
-        <div className="login">
-            <FontAwesomeIcon icon={faUserCircle} size="5x" />
-            <h4>Log In</h4><br/>
-            <Alert>Complete your user profile after logging in by going to dashboard</Alert>
-            <Button variant="primary" onClick={login}><FontAwesomeIcon icon={faGoogle} />   Log in with Google</Button><br /><br/>
+        <>
+        <Alert>Complete your user profile after logging in by going to dashboard</Alert>
+        <Container fluid className="login">
+            <Row>
+                <Col>
+                <FontAwesomeIcon icon={faUserCircle} size="5x" />
+                <h4>Log In</h4><br/>
+                </Col>
+            </Row>
+            <Row>
+            <Col></Col>
+            </Row>
+            <Row>
+                <Col>
+                <Button variant="primary" onClick={login}><FontAwesomeIcon icon={faGoogle} />   Log in with Google</Button><br /><br/>
             <Button variant="outline-secondary" href="/login/phone"><FontAwesomeIcon icon={faPhone} />   Log in using Phone</Button>
+                </Col>
+            
+            </Row>
+            
             {err && <Alert variant="danger">{err}</Alert>} 
-        </div>
+        </Container>
+        </>
     );
 }
 

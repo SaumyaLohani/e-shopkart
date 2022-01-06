@@ -53,9 +53,9 @@ function ItemView(props){
             const { d, error } = await supabase
             .from('cart')
             .insert([
-                { user: props.uid, product: data.title, quantity: quant},
+                { user: props.uid, product: data.title, quantity: quant, image: data.image, price:data.price},
             ]);
-            console.log(props.uid);
+            console.log(error);
             setMessage("Item added");
             handleShow();
         }

@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import {supabase} from '../supabase';
-import {Button, Card, Modal,Col,Row, Alert} from "react-bootstrap";
+import {Button, Card, Modal,Col,Row, Alert, Container} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import Loader from "react-loader-spinner";
@@ -8,7 +8,8 @@ import Loader from "react-loader-spinner";
 function Cart(props){
 
     const [data,setData]=useState([]);
-    const [name, setName]= useState("");const [message,setMessage] = useState("");
+    let total=0;
+    const [message,setMessage] = useState("");
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
@@ -23,6 +24,7 @@ function Cart(props){
           try{
             let { data: cart, error } = await supabase.from('cart').select("*").eq('user',props.uid);
             setData(cart);
+            console.log(error)
         } catch(e){
             console.log(e)
         }
@@ -34,7 +36,7 @@ function Cart(props){
         const { d, error } = await supabase
             .from('orders')
             .insert([
-                { items:data, user:props.uid},
+                { items:data, user:props.uid, price: total},
             ])
         const { da, er } = await supabase
             .from('cart')
@@ -56,26 +58,35 @@ function Cart(props){
         if(data.length>0){
             return(
                 <div className="cart">
-                    <h1> Cart </h1>
+                    <h1> Cart </h1><br/>
                     {
                         data.map((d,index)=>{
+                            total=total+(d.quantity*d.price);
                             return(
                                 <div>
                                     <Card>
+                                        <Container fluid>
                                         <Row>
+                                            <Col xs={2}>
+                                                <img src={d.image} alt="" />
+                                            </Col>
                                             <Col className="a">
                                                 <Card.Title>{index+1}. &ensp;{d.product}</Card.Title>
-                                                <Card.Text>&ensp; &ensp; &ensp;Quantity:{d.quantity}&emsp;</Card.Text>
+                                                <Card.Text>&ensp;Quantity:{d.quantity}&emsp;</Card.Text>
+                                                <Card.Text>&ensp;Price:{d.quantity*d.price}&emsp;</Card.Text>
                                             </Col>
-                                            <Col className="c">
+                                            <Col xs={1} className="c">
                                                 <Button variant="outline-danger"  onClick={()=>del(d.product)}><FontAwesomeIcon icon={faTrash} /></Button>
                                             </Col>
                                         </Row>
+                                        </Container>
+                                        
                                     </Card>
                                 </div>
                             );
                         })
-                    }
+                    }<br/>
+                    <p><b>Cart Price:{total}$</b></p>
                     <Button variant="outline-primary" onClick={order}><FontAwesomeIcon icon={faCheckCircle}  />&ensp;Place Order</Button>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Body>{message}</Modal.Body>

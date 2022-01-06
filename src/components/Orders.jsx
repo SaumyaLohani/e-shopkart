@@ -6,14 +6,14 @@ import Loader from "react-loader-spinner";
 function Orders(props){
 
     const [data,setData]=useState([]);
-    
+    const [p, setP]= useState();
 
     useEffect(() =>{
         const getData= async() =>{
         console.log(props);
         try{
-            let { data: orders, error } = await supabase.from('orders').select('items').eq('user',props.uid);
-            setData(orders)
+            let { data: orders, error } = await supabase.from('orders').select('*').eq('user',props.uid);
+            setData(orders);
             console.log(data);
         } catch(e){
             console.log(e)
@@ -35,12 +35,12 @@ function Orders(props){
                             <Card.Title style={{fontSize:'25px'}}>Order {index+1}</Card.Title>
                             <ListGroup>
                             {d.items.map((da,index)=>{
-                                console.log(da);
                                 return(
                                         <ListGroup.Item>{da.product}:<b>{da.quantity}</b></ListGroup.Item>
                                 );
                             })}
                             </ListGroup>
+                            <Card.Text>Amount to be paid:{data[0].price}</Card.Text>
                         </Card>
                         );
                     })
