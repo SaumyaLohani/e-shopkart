@@ -12,7 +12,6 @@ function Phone(){
     const [otp,setOtp]=useState("");
     const [message,setMessage] = useState("");
     const [show, setShow] = useState(false);
-    logEvent(analytics,"phone_login");
     const handleClose = () => {
         setShow(false);
         window.confirmationResult.confirm(otp).then((result)=>{
@@ -48,6 +47,9 @@ function Phone(){
 
     const verify=async()=>{
         window.confirmationResult.confirm(otp).then((result)=>{
+            logEvent(analytics,"phone_login",{
+                value:p
+            });
             setMessage("User signed in");
             handleShow();
             window.location.href="/";

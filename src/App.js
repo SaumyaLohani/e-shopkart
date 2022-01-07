@@ -52,6 +52,9 @@ function App() {
             .from('user')
             .select('id').eq("email",supabase.auth.user().email);
           setId(u[0].id);
+          logEvent(analytics,"gmail_login",{
+            value:supabase.auth.user().email
+        });
         }else{
           setSupa(false);
           onAuthStateChanged(auth, (u) => {

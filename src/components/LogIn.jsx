@@ -16,10 +16,11 @@ function LogIn(){
           });
           if(error){
               setError(error);
+          }else{
+            logEvent(analytics,"gmail_login",{
+                value:user.email
+            });
           }
-        logEvent(analytics,"gmail_login",{
-            value:user.email
-        });
     }
 
     return(
