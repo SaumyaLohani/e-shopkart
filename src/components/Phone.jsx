@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
-import {supabase, auth} from '../supabase';
+import {supabase, auth, analytics} from '../supabase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import {Form,Button,Modal} from 'react-bootstrap';
 import {signInWithPhoneNumber, RecaptchaVerifier} from 'firebase/auth';
-
+import {logEvent} from "firebase/analytics";
  
 function Phone(){
     const [p,setPhone]=useState("");
@@ -12,6 +12,7 @@ function Phone(){
     const [otp,setOtp]=useState("");
     const [message,setMessage] = useState("");
     const [show, setShow] = useState(false);
+    logEvent(analytics,"phone_login");
     const handleClose = () => {
         setShow(false);
         window.confirmationResult.confirm(otp).then((result)=>{

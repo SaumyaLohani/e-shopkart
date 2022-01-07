@@ -16,8 +16,9 @@ import {Navbar,Nav,Container, Offcanvas, NavDropdown} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import {supabase,auth} from './supabase';
-import {onAuthStateChanged, signOut} from 'firebase/auth'
+import {supabase,auth,analytics} from './supabase';
+import {onAuthStateChanged, signOut} from 'firebase/auth';
+import {logEvent} from 'firebase/analytics';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
 
 
   const out=async()=>{
+    logEvent(analytics,"logout");
     if(supa){
       const { error } = await supabase.auth.signOut();
     }else{

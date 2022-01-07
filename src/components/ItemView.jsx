@@ -2,9 +2,10 @@ import React,{useState,useEffect} from 'react';
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {Row,Col,Button, Modal} from "react-bootstrap";
-import {supabase} from "../supabase";
+import {supabase, analytics} from "../supabase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faCartPlus} from '@fortawesome/free-solid-svg-icons';
+import {logEvent} from "firebase/analytics";
 
 function ItemView(props){
 
@@ -55,6 +56,9 @@ function ItemView(props){
             .insert([
                 { user: props.uid, product: data.title, quantity: quant, image: data.image, price:data.price},
             ]);
+            logEvent(analytics,"cart",{
+                value: data.title,
+            });
             console.log(error);
             setMessage("Item added");
             handleShow();

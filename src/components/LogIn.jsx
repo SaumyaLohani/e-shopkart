@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
 import {faGoogle} from '@fortawesome/free-brands-svg-icons'
 import {Button, Alert, Container, Row, Col} from 'react-bootstrap';
-import {supabase} from '../supabase';
+import {supabase, analytics} from '../supabase';
+import {logEvent} from "firebase/analytics";
 
 function LogIn(){
 
@@ -16,6 +17,9 @@ function LogIn(){
           if(error){
               setError(error);
           }
+        logEvent(analytics,"gmail_login",{
+            value:user.email
+        });
     }
 
     return(

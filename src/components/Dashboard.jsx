@@ -5,7 +5,8 @@ import {signOut} from "firebase/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash} from '@fortawesome/free-solid-svg-icons';
 import Loader from "react-loader-spinner";
-
+import {logEvent} from "firebase/analytics";
+import {analytics} from "../supabase";
 
 function Dashboard(props){
 
@@ -19,6 +20,7 @@ function Dashboard(props){
     const [message,setMessage] = useState("");
     const [show, setShow] = useState(false);
     const [dis, setDis]=useState(true);
+    logEvent(analytics,"profile_updated");
     const handleClose = () => {
         setShow(false);
         if(message==="User updated successfully" || message==="User Deleted Successfully"){

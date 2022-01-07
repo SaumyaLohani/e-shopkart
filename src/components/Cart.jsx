@@ -1,9 +1,10 @@
 import React,{useEffect,useState} from 'react';
-import {supabase} from '../supabase';
+import {supabase, analytics} from '../supabase';
 import {Button, Card, Modal,Col,Row, Alert, Container} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import Loader from "react-loader-spinner";
+import {logEvent} from "firebase/analytics"
 
 function Cart(props){
 
@@ -44,6 +45,7 @@ function Cart(props){
             .eq('user', props.uid);
         setMessage("Order Placed");
         handleShow();
+        logEvent(analytics,"order_placed");
       }
 
       const del= async(val)=>{

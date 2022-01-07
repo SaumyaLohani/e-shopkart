@@ -2,6 +2,8 @@ import React,{useState,useEffect} from "react";
 import axios from "axios";
 import {Card,Row, Col, Form} from 'react-bootstrap';
 import Loader from "react-loader-spinner";
+import {logEvent} from "firebase/analytics";
+import {analytics} from "../supabase";
 
 function Home() {
 
@@ -11,6 +13,9 @@ function Home() {
     const [matches, setMatches] = useState(
       window.matchMedia("(max-width: 600px)").matches
     )
+    logEvent(analytics,"homepage_visited", {
+      index: 1
+    });
   
     useEffect(() =>{
       window.matchMedia("(max-width: 600px)").addEventListener('change', e => setMatches( e.matches ));
