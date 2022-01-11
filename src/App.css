@@ -237,3 +237,7 @@ img{
     background-color: #ffffff;
   }
 }
+
+.strike{
+  text-decoration: line-through;
+}
