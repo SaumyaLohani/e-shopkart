@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
-import {Card,Row, Col, Form} from 'react-bootstrap';
+import {Card,Row, Col, Form, Button} from 'react-bootstrap';
 import Loader from "react-loader-spinner";
 import {logEvent} from "firebase/analytics";
 import {analytics} from "../supabase";
@@ -16,6 +16,10 @@ function Home() {
     logEvent(analytics,"homepage_visited", {
       index: 1
     });
+    
+    const err=()=>{
+      throw new Error("Error for sentry");
+    }
   
     useEffect(() =>{
       window.matchMedia("(max-width: 600px)").addEventListener('change', e => setMatches( e.matches ));
@@ -55,6 +59,7 @@ function Home() {
                   <Form.Check type="radio" label="Men's Clothing" name="group" onChange={()=>setRadio("men")}/>
                   <Form.Check type="radio" label="Women's Clothing" name="group" onChange={()=>setRadio("women")}/>
                 </Form>
+                <Button onClick={err} >Error Button</Button>
                 </Row>
                 
               <Col className="">
@@ -106,6 +111,7 @@ function Home() {
                   <Form.Check type="radio" label="Men's Clothing" name="group" onChange={()=>setRadio("men")}/>
                   <Form.Check type="radio" label="Women's Clothing" name="group" onChange={()=>setRadio("women")}/>
                 </Form>
+                <Button onClick={err} >Error Button</Button>
               </Col>
               <Col className="dat">
               {load?<Loader
