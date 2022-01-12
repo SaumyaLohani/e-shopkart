@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { getRemoteConfig } from "firebase/remote-config";
+import { getPerformance } from "firebase/performance";
 
 const SUPABASE_URL = 'https://uexpkvyhppcpxuhgbjxw.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MDY2NTExOCwiZXhwIjoxOTU2MjQxMTE4fQ.fgq8i0jvMRB0ppyPoLdIA8ga4YikAJoC1oV56ZY8ciE'
@@ -28,3 +29,4 @@ remoteConfig.defaultConfig = {
   "discount": 50
 };
 export {remoteConfig};
+const perf = getPerformance(app);
