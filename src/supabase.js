@@ -11,14 +11,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCiv3KGEDCmBH1teBINVTWVXb0G40GqSe8",
-    authDomain: "e-shopkart-c1aa4.firebaseapp.com",
-    projectId: "e-shopkart-c1aa4",
-    storageBucket: "e-shopkart-c1aa4.appspot.com",
-    messagingSenderId: "543058318115",
-    appId: "1:543058318115:web:135ba8cc5eadfa4f7ff296",
-    measurementId: "G-KFGSG0ZSNM"
-  };
+  apiKey: "AIzaSyAts-uqvZz_Vqw5gONZTwASjrf3XdG0Bxw",
+  authDomain: "e-shopkart-6f9b9.firebaseapp.com",
+  projectId: "e-shopkart-6f9b9",
+  storageBucket: "e-shopkart-6f9b9.appspot.com",
+  messagingSenderId: "882655056087",
+  appId: "1:882655056087:web:b13b7a3567b6be92d92092",
+  measurementId: "G-FHVPV1SYBF"
+};
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
